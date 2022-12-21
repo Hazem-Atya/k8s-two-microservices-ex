@@ -158,12 +158,68 @@ The minimal configuration of a pod is the name and the container image <br>
   ![image](https://user-images.githubusercontent.com/53778545/208944536-2775a302-8e3d-4fff-9e8d-6e56a6c7a135.png) <br> <br>
 The user communicates with MS-A, and for some requests, MS-A needs to communicate with MS-B. <br>  <br>
   ![image](https://user-images.githubusercontent.com/53778545/208944559-c74b2ad0-d784-4a9e-a8a0-178012bad00a.png)
+## Notes
+After building the docker image and pushing it to dockerhub, we'll use a yaml file to automate the cluster creation
+* We create this YAML file (copied from Kubernetes docs then edited): deployment.yaml:
+```yaml
+apiVersion: apps/v1
+kind: Deployment # type of resource
+metadata:
+  name: ms-a
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app:
+        ms-a # all pods with with label will belong to the deployment,
+        # if we create a pod manually with the
+        # same label it will belong to the deployment
+        #(and it will kill one of its pods
+        # since the desired number is this case is )
+  template: # template is the definition of the pod
+    metadata:
+      labels:
+        app: ms-a
+    spec:
+      containers:
+        - name: ms-a
+          image: docker.io/laykidi/ms-a
+          ports:
+            - containerPort: 3000  
+```
+  <b>Note: API version<b> <br>
+  Every kubernetes resource is under an api version.
+    
+  Api version is a way to check if the manifest version is compatible with the cluster version or not.
+  We create this YAML file (copied from Kubernetes docs then edited): deployment.yaml
 
+* We can generate the previous yaml using this command <br>
+  `kubectl create deployment ms-a --image=docker.io/laykidi/ms-a  --replicas=3 --port 3000 --dry-run=client -o yaml`
+* We create service.yaml <br>
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-a-service
+spec:
+  selector:
+    app: ms-a
+  ports:
+  - name: express-port
+    protocol: TCP
+    port: 80
+    targetPort: 3000
+```
+* `kubectl apply -f deployment.yaml`: Apply the yaml file (same thing for the service)
+* We can apply both deployment and service yaml files at the same time: `kubectl apply -R -f .`
+* ```kubectl port-forward svc/ms-a-service 8080:80```: Port forwarding from localhost to the service port:
 
+![image](https://user-images.githubusercontent.com/53778545/208948583-9ed03dc9-871e-4c7b-8c15-3ca6b18d796e.png)
 
-
-
-
+ 
+Localhost:8080 => service:80 => pod: 3000
 
 
 
