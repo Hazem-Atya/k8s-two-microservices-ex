@@ -25,8 +25,20 @@
        <li>  
                  <a href="#creating-a-service"> Creating a service</a>
       </li>
+       <li>  
+                 <a href="#editing-a-service"> Editing a service</a>
+      </li>
     </ul>
     </li>
+    <li>
+                       <a href="#editing-a-service"> Editing a service</a>
+      <a href="#building-a-microservices-architecture-in-k8s"> Building a microservices architecture in K8s </a>
+      <ul>
+       <li>  
+                 <a href="#architecture">Architecture</a>
+      </li>
+      </ul>
+     <li>
   </ul>
  </details>
 
@@ -127,11 +139,25 @@ The minimal configuration of a pod is the name and the container image <br>
   <br> The port exposed by the service is 80, the target port is the target of the service
  *  List our services after creating our new service: <br>
 <img   src="https://user-images.githubusercontent.com/53778545/208940863-e4a81277-9aa7-4ec7-80d6-ea1b9ca57067.png" style="width:600px"> <br> <br>
+* `kubectl port-forward svc/test-deploy 8080:80` : Port forwarding (from our machine to the service)
+ <img   src="https://user-images.githubusercontent.com/53778545/208941203-00f33c86-5252-434a-99eb-1eba991b53d6.png" style="width:400px"> <br> <br>
 
- 
+## Editing a service
+* `kubectl edit services test-deploy`:  <br>
+ <img   src="https://user-images.githubusercontent.com/53778545/208941678-c208a976-33f0-45e6-aa8b-123017b69b67.png" style="width:300px"> <br> <br>
+* Verify that our service is now exposing the port 5000 <br>
+ <img   src="https://user-images.githubusercontent.com/53778545/208941941-8ff03488-7571-4fbf-83b1-47d0a38dd601.png" style="width:600px"> <br> <br>
+* Edit our port forwarding <br> <br>
+   <img   src="https://user-images.githubusercontent.com/53778545/208942061-aeb998ea-0225-4290-a7f0-a8dab752e028.png" style="width:600px"> <br> <br>
+   <img   src="https://user-images.githubusercontent.com/53778545/208942149-df4de9f9-9fa7-454c-813b-4df71a5cf71f.png" style="width:600px"> <br> <br>
 
+# Building a microservices architecture in K8s
 
-
+## Architecture
+  
+  ![image](https://user-images.githubusercontent.com/53778545/208944536-2775a302-8e3d-4fff-9e8d-6e56a6c7a135.png) <br> <br>
+The user communicates with MS-A, and for some requests, MS-A needs to communicate with MS-B. <br>  <br>
+  ![image](https://user-images.githubusercontent.com/53778545/208944559-c74b2ad0-d784-4a9e-a8a0-178012bad00a.png)
 
 
 
