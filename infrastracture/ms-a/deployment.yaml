@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+
+kind: Deployment # type of resource
+
+metadata:
+  name: ms-a
+
+  labels:
+    app: nginx
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app:
+        ms-a # all pods with with label will belong to the deployment,
+        # if we create a pod manually with the
+        # same label it will belong to the deployment
+        #(and it will kill one of its pods
+        # since the desired number is this case is )
+  template: # template is the definition of the pod
+    metadata:
+      labels:
+        app: ms-a
+    spec:
+      containers:
+        - name: ms-a
+          image: docker.io/laykidi/ms-a
+          ports:
+            - containerPort: 3000
