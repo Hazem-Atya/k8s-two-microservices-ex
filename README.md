@@ -7,7 +7,7 @@
        <a href="#introduction">Introduction </a>
       <ul>
           <li> <a href="#ecs-architecture">AWS ECS architecture </a> </li>
-     <li> <a href="#creating-and-testing-a-pod">Creating and testing a pod  </a> </li>
+     <li> <a href="#kubernetes-cluster-architecture">K8s cluster architecture  </a> </li>
       </ul>
       </li>
   <li>
