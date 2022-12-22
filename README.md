@@ -31,7 +31,6 @@
     </ul>
     </li>
     <li>
-                       <a href="#editing-a-service"> Editing a service</a>
       <a href="#building-a-microservices-architecture-in-k8s"> Building a microservices architecture in K8s </a>
       <ul>
        <li>  
@@ -158,7 +157,7 @@ The minimal configuration of a pod is the name and the container image <br>
   ![image](https://user-images.githubusercontent.com/53778545/208944536-2775a302-8e3d-4fff-9e8d-6e56a6c7a135.png) <br> <br>
 The user communicates with MS-A, and for some requests, MS-A needs to communicate with MS-B. <br>  <br>
   ![image](https://user-images.githubusercontent.com/53778545/208944559-c74b2ad0-d784-4a9e-a8a0-178012bad00a.png)
-## Notes
+## Create our first deployment (ms-a)
 After building the docker image and pushing it to dockerhub, we'll use a yaml file to automate the cluster creation
 * We create this YAML file (copied from Kubernetes docs then edited): deployment.yaml:
 ```yaml
@@ -177,7 +176,7 @@ spec:
         # if we create a pod manually with the
         # same label it will belong to the deployment
         #(and it will kill one of its pods
-        # since the desired number is this case is )
+        # since the desired number is this case is 3)
   template: # template is the definition of the pod
     metadata:
       labels:
@@ -193,7 +192,6 @@ spec:
   Every kubernetes resource is under an api version.
     
   Api version is a way to check if the manifest version is compatible with the cluster version or not.
-  We create this YAML file (copied from Kubernetes docs then edited): deployment.yaml
 
 * We can generate the previous yaml using this command <br>
   `kubectl create deployment ms-a --image=docker.io/laykidi/ms-a  --replicas=3 --port 3000 --dry-run=client -o yaml`
@@ -205,7 +203,7 @@ metadata:
   name: ms-a-service
 spec:
   selector:
-    app: ms-a
+    app: ms-a   # this service points on anything with the label app: msa
   ports:
   - name: express-port
     protocol: TCP
@@ -213,13 +211,59 @@ spec:
     targetPort: 3000
 ```
 * `kubectl apply -f deployment.yaml`: Apply the yaml file (same thing for the service)
-* We can apply both deployment and service yaml files at the same time: `kubectl apply -R -f .`
+* We can apply both deployment and service yaml files at the same time: 
+```bash
+kubectl apply -R -f .  
+```
+If we delete the cluster, reapplying the deployment and service files will recreate the deployment, replica set, pods and service 
+
 * ```kubectl port-forward svc/ms-a-service 8080:80```: Port forwarding from localhost to the service port:
 
 ![image](https://user-images.githubusercontent.com/53778545/208948583-9ed03dc9-871e-4c7b-8c15-3ca6b18d796e.png)
 
- 
 Localhost:8080 => service:80 => pod: 3000
+## Useful commands/notes
+We can desribe our pods qnd verify that they are controlled by the replicaset which is controlled by the deployment.
+* `kubectl get rs` <br>
+![image](https://user-images.githubusercontent.com/53778545/209162678-80226c52-3ad4-4ebb-8954-4773dd65d854.png) <br>
+* `kubectl get pod` <br>
+![image](https://user-images.githubusercontent.com/53778545/209162849-087d29a3-ab87-4143-8b9b-e797f156f696.png)
+<br>
+=> We can see that the pods names are prefixed by the replica set name.
 
+* `kubectl port-forward pod/ms-a-74497dc6c9-kc7mq 5400:3000` :  Port forward to pod (without passing by the  service, it can be used for debugging puposes.
+* `kubectl logs ms-a-74497dc6c9-kc7mq`: see the logs of a pod <br>
+<b>NOTE<br>: If our pod contains more than one container we have to specify the container after the pod.
 
+## DNS debugging 
+* Create a simple pod as a test environment (copied from [K8s documentation](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) )
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils
+  namespace: default
+spec:
+  containers:
+  - name: dnsutils
+    image: registry.k8s.io/e2e-test-images/jessie-dnsutils:1.3
+    command:
+      - sleep
+      - "infinity"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
 
+```
+* Apply the yaml file to create the pod
+* `kubectl get pod` verify that our that is created <br> <br>
+![image](https://user-images.githubusercontent.com/53778545/209167970-d5707830-8da5-41e2-a33c-3e04ff49a460.png) <br> <br>
+* ` kubectl exec -it dnsutils -- which nslookup` :  excecute a command inside a pod container <br>
+<b>Notes<b>: 
+  * If our pod contains more than one container we have to specify the container after the pod.
+  * nslookup is a network administration command-line tool for querying the Domain Name System to obtain the mapping between domain name and IP address
+* `kubectl exec -it dnsutils -- nslookup ms-a-service` <br> <br>
+![image](https://user-images.githubusercontent.com/53778545/209170229-02406d6c-a29f-4b4e-b07e-ebb1f467fcb3.png)
+```
+ms-a-service.default.svc.cluster.local A 10.0.234.2 
+ms-aservice CNAME ms-a-service.default.svc.cluster.local
+```
