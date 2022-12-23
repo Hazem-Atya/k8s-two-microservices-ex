@@ -284,14 +284,20 @@ Note: It is a good practice to name our yaml files in the following way to respe
 ## Services types
 [Kubernetes docs: Publishing Services (ServiceTypes)](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
   
-## Ingress [Ingress, K8s docs](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+## Ingress [(K8s docs)](https://kubernetes.io/docs/concepts/services-networking/ingress/)
   
 ### Make our ms-a-service a node port [(k8s docs)](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)
   * `kubectl edit  service ms-a-service`: edit t running service (some fields are mutable and some are immutable)
   * Under `spec`, change type to `type: NodePort`.
   * Under `spec : ports`, add `nodePort: 30007`
   * `kubectl get svc`: verify that the type has changed
-  
- 
-  
+### Creating an ingress 
+  * [Installing helm in ubuntu](https://helm.sh/docs/intro/install/#from-apt-debianubuntu)
+  * [Create a basic NGINX ingress controller](https://learn.microsoft.com/en-us/azure/aks/ingress-basic?tabs=azure-cli#basic-configuration)
+  * Create an ingress:
+    * `kubectl create ingress ms-a --rule="gl5.devops/=ms-a-service:80" --dry-run=client -o yaml > infrastracture/ms-a/03-ingress.yaml`
+    * `kubectl apply -R -f infrastracture/ms-a` 
+    * `kubectl get ingress`  <br> 
+  ![image](https://user-images.githubusercontent.com/53778545/209324326-4b717aa4-0abd-431b-a868-3477cafa8660.png) <br> 
+    * `kubectl describe ingress ms-a`
   
