@@ -234,7 +234,8 @@ We can desribe our pods qnd verify that they are controlled by the replicaset wh
 * `kubectl port-forward pod/ms-a-74497dc6c9-kc7mq 5400:3000` :  Port forward to pod (without passing by the  service, it can be used for debugging puposes.
 * `kubectl logs ms-a-74497dc6c9-kc7mq`: see the logs of a pod <br>
 <b>NOTE<br>: If our pod contains more than one container we have to specify the container after the pod.
-
+* `kubectl delete   -f infrastracture/ms-a/deployment.yaml` : Delete a deployment
+* 
 ## DNS debugging 
 * Create a simple pod as a test environment (copied from [K8s documentation](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) )
 ```yaml
@@ -263,7 +264,19 @@ spec:
   * nslookup is a network administration command-line tool for querying the Domain Name System to obtain the mapping between domain name and IP address
 * `kubectl exec -it dnsutils -- nslookup ms-a-service` <br> <br>
 ![image](https://user-images.githubusercontent.com/53778545/209170229-02406d6c-a29f-4b4e-b07e-ebb1f467fcb3.png)
+
+## Namespaces
+![image](https://user-images.githubusercontent.com/53778545/209304564-7d0cd388-bbb7-46a6-a96a-0a9cc88a9e9a.png)
+To create a name space:
+* Add the name space in the metadata `namespace: ms-b-ns` in the deployment and service yaml files)
+* `kubectl create namespace ms-b-ns --dry-run=client -o yaml`: Execute this command to generate the following yaml file: <br>
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ms-b-ns
 ```
-ms-a-service.default.svc.cluster.local A 10.0.234.2 
-ms-aservice CNAME ms-a-service.default.svc.cluster.local
-```
+Note: It is a good practice to name our yaml files in the following way to respect dependencies (02-deployment.yaml depends on 01-namespace.yaml and 03-service.yaml depends on the two previous yamls) <br>
+<img src="https://user-images.githubusercontent.com/53778545/209306713-99225665-7c8e-4571-a263-001f7b26872c.png"  style="width:300px"> 
+* `kubectl get pods -n ms-b-ns` : By default, the get commands returns only the resources that belong to the default namespace, we can use the `-n` flag to specify the namespace or `-A` to show resources in all namespaces (e.g. `kubectl get svc -A`).
+* `http://ms-b-service.ms-b-ns:80`: We now have to specify the namespace in the domain name of the service.
