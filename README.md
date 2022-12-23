@@ -301,3 +301,5 @@ Note: It is a good practice to name our yaml files in the following way to respe
   ![image](https://user-images.githubusercontent.com/53778545/209324326-4b717aa4-0abd-431b-a868-3477cafa8660.png) <br> 
     * `kubectl describe ingress ms-a`
   
+## Environment variables
+ We can define the environment variables in the container in the [container definition](https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/#define-an-environment-variable-for-a-container). 
