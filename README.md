@@ -280,3 +280,18 @@ Note: It is a good practice to name our yaml files in the following way to respe
 <img src="https://user-images.githubusercontent.com/53778545/209306713-99225665-7c8e-4571-a263-001f7b26872c.png"  style="width:300px"> 
 * `kubectl get pods -n ms-b-ns` : By default, the get commands returns only the resources that belong to the default namespace, we can use the `-n` flag to specify the namespace or `-A` to show resources in all namespaces (e.g. `kubectl get svc -A`).
 * `http://ms-b-service.ms-b-ns:80`: We now have to specify the namespace in the domain name of the service.
+
+## Services types
+[Kubernetes docs: Publishing Services (ServiceTypes)](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+  
+## Ingress [Ingress, K8s docs](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+  
+### Make our ms-a-service a node port [(k8s docs)](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)
+  * `kubectl edit  service ms-a-service`: edit t running service (some fields are mutable and some are immutable)
+  * Under `spec`, change type to `type: NodePort`.
+  * Under `spec : ports`, add `nodePort: 30007`
+  * `kubectl get svc`: verify that the type has changed
+  
+ 
+  
+  
