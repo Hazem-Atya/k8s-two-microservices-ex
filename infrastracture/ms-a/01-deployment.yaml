@@ -4,7 +4,6 @@ kind: Deployment # type of resource
 
 metadata:
   name: ms-a
-
   labels:
     app: nginx
 
@@ -30,6 +29,6 @@ spec:
             - containerPort: 3000
           env:
             - name: MSB_HOST
-              value: 80
+              value: "80"
             - name: MSB_PORT
-              value: 3000
+              value: "3000"

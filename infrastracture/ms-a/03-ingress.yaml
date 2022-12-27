@@ -2,9 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ms-a
-  annotations:
-    service.beta.kubernetes.io/azure-load-balancer-resource-group: two-microser_group
-    service.beta.kubernetes.io/azure-load-balancer-public-ip-name: 20.74.102.125
+  # annotations:
+  #   service.beta.kubernetes.io/azure-load-balancer-resource-group: two-microser_group
+  #   service.beta.kubernetes.io/azure-load-balancer-public-ip-name: 20.74.102.125
 
 spec:
   # 
@@ -19,5 +19,5 @@ spec:
             port:
               number: 80
         path: /
-        pathType: prefix
+        pathType: Prefix
 
