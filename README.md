@@ -303,3 +303,6 @@ Note: It is a good practice to name our yaml files in the following way to respe
   
 ## Environment variables
  We can define the environment variables in the container in the [container definition](https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/#define-an-environment-variable-for-a-container). 
+
+
+ 
