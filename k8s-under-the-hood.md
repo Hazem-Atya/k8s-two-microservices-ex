@@ -9,6 +9,9 @@
 * System capabilities
 * Network policites
 
+# K8s architecture
+![image](https://user-images.githubusercontent.com/53778545/209653279-6a4c8d0f-577b-4086-aac4-ee9d4abef9a3.png)
+
 
 ## Worker node component
 ### The kubelet is:
