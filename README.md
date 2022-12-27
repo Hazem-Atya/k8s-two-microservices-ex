@@ -126,6 +126,8 @@ The minimal configuration of a pod is the name and the container image <br>
 (ready and current become 2, then they will go back to 3 => a new pod is created)
 
 ## Creating a service
+  A service is used to loadbalance between the pods.
+
   <br>
  
 <img   src="https://user-images.githubusercontent.com/53778545/208937648-d67d32be-dd57-4616-a82a-e36195865436.png" style="width:600px"> <br> <br>
