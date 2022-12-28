@@ -9,8 +9,8 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ms-a 
-  template: 
+      app: ms-a
+  template:
     metadata:
       labels:
         app: ms-a
@@ -21,8 +21,34 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
           env:
             - name: MSB_HOST
               value: "80"
             - name: MSB_PORT
               value: "3000"
+            # Define the environment variable
+            - name: hazemAge # Notice that the case is different here
+              # from the key name in the ConfigMap.
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config # The ConfigMap this value comes from.
+                  key: age # The key to fetch.
+
+          volumeMounts:
+            - name: config-test      # The volume is mounted using its name
+              mountPath: "/configuration"
+              readOnly: true
+      volumes:
+        # You set volumes at the Pod level, then mount them into containers inside that Pod
+        - name: config-test
+          configMap:
+            # Provide the name of the ConfigMap you want to mount.
+            name: my-config
+            # An array of keys from the ConfigMap to create as files
+            items:
+              - key: age  # the name of the variable in the config map
+                path: test # the name of the file where to store the value 

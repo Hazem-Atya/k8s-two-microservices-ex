@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  age: "23"
+  name: hazem
+kind: ConfigMap
+metadata:
+  name: my-config
+

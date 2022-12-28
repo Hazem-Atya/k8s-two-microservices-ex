@@ -1,4 +1,4 @@
-# Deploying a Two microservices example in azure k8s
+# Deploying a Two microservices example in Azure Kubernetes Service (AKS)
 
 <details>
   <summary>Table of Contents</summary>
@@ -304,11 +304,12 @@ Note: It is a good practice to name our yaml files in the following way to respe
     * `kubectl get ingress`  <br> 
   ![image](https://user-images.githubusercontent.com/53778545/209324326-4b717aa4-0abd-431b-a868-3477cafa8660.png) <br> 
     * `kubectl describe ingress ms-a`
-## <b>IMPORTANT NOTE </b> 
+#### <b>IMPORTANT NOTE </b>
 
 If we specify a host in the ingress definition, we will only be able to access the ingress controller through the hostname.
 (The hostname will be injected in the header, and if we try to send and http request directly to the external ip, we'll get a 404 error). <br>
 If we don't specify a hostname, we can access the ingress controller using its ip address.
+
 #### <b>IMPORTANT NOTE</b>
 The ingress is created by the cloud control manager <b>OUTSIDE</b> of the cluster.  
 ## Environment variables
