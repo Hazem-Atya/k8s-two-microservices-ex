@@ -39,10 +39,17 @@ spec:
                   key: age # The key to fetch.
 
           volumeMounts:
-            - name: config-test      # The volume is mounted using its name
+            # -------------------------Volume mount of the config map----------------
+            - name: config-test # The volume is mounted using its name
               mountPath: "/configuration"
               readOnly: true
+            # -------------------------Volume mount of the persistent volume----------------
+            - name: mounted-volume
+              mountPath: "/hazem-data"
+               
       volumes:
+
+      #------------------------------Volume of the config map----------------------
         # You set volumes at the Pod level, then mount them into containers inside that Pod
         - name: config-test
           configMap:
@@ -50,5 +57,9 @@ spec:
             name: my-config
             # An array of keys from the ConfigMap to create as files
             items:
-              - key: age  # the name of the variable in the config map
-                path: test # the name of the file where to store the value 
+              - key: age # the name of the variable in the config map
+                path: test # the name of the file where to store the value
+      #------------------------------Persistent volume----------------------
+        - name: mounted-volume
+          persistentVolumeClaim:
+            claimName: block-pvc-managed 

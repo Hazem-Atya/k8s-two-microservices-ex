@@ -57,6 +57,11 @@ Kubernetes, also known as K8s, is an open-source system for automating deploymen
 
 <br>
 
+## When to use kubernetes?
+* Large scale system
+* Distributed app
+
+
 # Manipulating a K8s cluster in Azure
 
 ## Connection to the azure cluster
@@ -312,8 +317,14 @@ If we don't specify a hostname, we can access the ingress controller using its i
 
 #### <b>IMPORTANT NOTE</b>
 The ingress is created by the cloud control manager <b>OUTSIDE</b> of the cluster.  
+#### <b>IMPORTANT NOTE</b>
+We can have many ingress controllers in the cluster, that's why we have to specify the ingress class when we create the ingress resource (the ingress class links the ingress controller and the ingress resources).
 ## Environment variables
  We can define the environment variables in the container in the [container definition](https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/#define-an-environment-variable-for-a-container). 
 
 
  
+# Debugging
+There are many ways to dedug:
+`kubectl describe RESOURCE_TYPE RESOURCE_NAME`, for e.g. (kubectl describe pod mypod)
+`kubectl exec`: execute a commad inside a running container. 

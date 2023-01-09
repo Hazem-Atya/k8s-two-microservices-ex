@@ -1,13 +1,14 @@
 
 * K8s architecture
+* Liveness probe and readiness probe
 * configmaps
 * secrets
 * persistent volume
-* Liveness Probe (LP) and Readiness Probe (RB)
-* RBAC
+
 * init containers
-* System capabilities
+* RBAC
 * Network policites
+* System capabilities
 
 # K8s architecture
 ![image](https://user-images.githubusercontent.com/53778545/209653279-6a4c8d0f-577b-4086-aac4-ee9d4abef9a3.png)
@@ -79,12 +80,22 @@ The secrets created are base64 encoded.
 Secrets can be used in the same way as configmaps.
 
 # Persistent volumes
-* `kubectl get storageclasses`
+`kubectl get storageclasses`: get all storage classes (we will use the managed storageclass in our pvc)
+* Create the manifest of a  persistent volume claim => applying the changements. 
+* ` kubectl get pvc`: get <b>p</b>ersistent <b>v</b>olume <b>c</b>laims
+* Attach our volume to our containers (in deployment.yaml)
+<b>Verify that the volume is shared </b>
+`kubectl exec ms-a-674c5f5896-kn5nn -it -- /bin/sh`: Create a file inside the new volume in one of the pods then verify that it's accessible in the others.
 
+#### <b>NOTE</b>
+If we delete the pods or the deployment, the volume and data won't be delete. They will be deleted only if we delete the volume claim.  
 
+# Init containers 
+A Pod can have multiple containers running apps within it, but it can also have one or more init containers, which are run before the app containers are started.
 
-
-
+Init containers are exactly like regular containers, except:
+* Init containers always run to completion.
+* Each init container must complete successfully before the next one starts.
 
 
 

@@ -1,0 +1,14 @@
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: pv0003
+# spec:
+#   capacity:
+#     storage: 200Mi
+#   accessModes:
+#     - ReadWriteOnce
+#   persistentVolumeReclaimPolicy: Recycle
+#   # recycle: content removed and becomes vailable for future use
+#   # retain: when we remove the claim, the persistent volume becomes unsuable
+#   # delete: delete the persistent volume.
+#   storageClassName: managed
