@@ -75,7 +75,7 @@ Kuberctl is build upon the SDK of golang, under the hood the SDK uses HTTP reque
 <br>
 To authenticate to the cluster, we must first download a certification from the cluster, and use it for authentication in the command line. <br>
 In azure, we can use the Azure CLI to login (and automatically download the certification). <br>
-The kubectl looks for the certify in a specific location ( /home/hazem/.kube/config ) <br> 
+The kubectl looks for the certification in a specific location ( /home/hazem/.kube/config ) <br> 
 Kubectl CLI syntax: <br>
 `kubectl verb recource-type  [ the resource ]`       <br>
 •	The resource type can be: deployment (deploy), replica set (rs) , POD (pod) <br>
@@ -197,7 +197,6 @@ spec:
 ```
   <b>Note: API version<b> <br>
   Every kubernetes resource is under an api version.
-    
   Api version is a way to check if the manifest version is compatible with the cluster version or not.
 
 * We can generate the previous yaml using this command <br>
@@ -230,7 +229,7 @@ If we delete the cluster, reapplying the deployment and service files will recre
 
 Localhost:8080 => service:80 => pod: 3000
 ## Useful commands/notes
-We can desribe our pods qnd verify that they are controlled by the replicaset which is controlled by the deployment.
+We can desribe our pods and verify that they are controlled by the replicaset which is controlled by the deployment.
 * `kubectl get rs` <br>
 ![image](https://user-images.githubusercontent.com/53778545/209162678-80226c52-3ad4-4ebb-8954-4773dd65d854.png) <br>
 * `kubectl get pod` <br>
@@ -240,9 +239,9 @@ We can desribe our pods qnd verify that they are controlled by the replicaset wh
 
 * `kubectl port-forward pod/ms-a-74497dc6c9-kc7mq 5400:3000` :  Port forward to pod (without passing by the  service, it can be used for debugging puposes.
 * `kubectl logs ms-a-74497dc6c9-kc7mq`: see the logs of a pod <br>
-<b>NOTE<br>: If our pod contains more than one container we have to specify the container after the pod.
+<b>NOTE</b>: If our pod contains more than one container we have to specify the container after the pod.
 * `kubectl delete   -f infrastracture/ms-a/deployment.yaml` : Delete a deployment
-* 
+  
 ## DNS debugging 
 * Create a simple pod as a test environment (copied from [K8s documentation](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) )
 ```yaml
@@ -302,7 +301,6 @@ Note: It is a good practice to name our yaml files in the following way to respe
   * [Installing helm in ubuntu](https://helm.sh/docs/intro/install/#from-apt-debianubuntu)
   * [Create a basic NGINX ingress controller](https://learn.microsoft.com/en-us/azure/aks/ingress-basic?tabs=azure-cli#basic-configuration)
   * Verify that the ingress controller is installed: `kubectl get svc -A`
-  * tabs=azure-cli#basic-configuration)
   * Create an ingress:
     * `kubectl create ingress ms-a --rule="gl5.devops/=ms-a-service:80" --dry-run=client -o yaml > infrastracture/ms-a/03-ingress.yaml`
     * `kubectl apply -R -f infrastracture/ms-a` 
