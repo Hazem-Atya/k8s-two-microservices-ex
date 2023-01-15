@@ -326,3 +326,4 @@ We can have many ingress controllers in the cluster, that's why we have to speci
 There are many ways to dedug:
 `kubectl describe RESOURCE_TYPE RESOURCE_NAME`, for e.g. (kubectl describe pod mypod)
 `kubectl exec`: execute a commad inside a running container. 
+`kubectl logs --follow POD_NAME`: See the logs produced by the container
